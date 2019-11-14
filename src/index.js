@@ -5,26 +5,27 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux'
+import { Provider } from 'react-redux';
 
 const initialState = {
-    count: 5
+    count: 0
 };
 function reducer(state = initialState, action) {
     console.log('reducer', state, action);
     switch (action.type) {
         case 'INCREMENT':
-            console.log("\n\nincrement --->",state.count+1)
+            console.log("\n\nincrement --->", state.count + 1)
             return {
                 count: state.count + 1 // increment
             };
         case 'DECREMENT':
-                console.log("\n\ndecrement --->",state.count-1)
+            console.log("\n\ndecrement --->", state.count - 1)
 
             return {
                 count: state.count - 1 //decrememnt
             };
         case 'RESET':
-                console.log("\n\nRESET --->",state.count)
+            console.log("\n\nRESET --->", state.count)
 
             return {
                 count: 0
@@ -48,7 +49,11 @@ console.log("\n\n\t--->", store)
 
 
 
-ReactDOM.render(<App />, document.getElementById('root'));// renders the App component on to the root dom node
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root'));// renders the App component on to the root dom node
 
 
 
