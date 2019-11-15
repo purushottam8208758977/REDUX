@@ -118,7 +118,9 @@ const colorsPallete = [{
 
     changingColorOfNote = (event, index) => {
         console.log("\n\n\tInitiating color change -->");
-
+        let value = null
+        this.props.anchor(value)
+        this.props.colorPopUp()
         let colorObject = {}
         // colorObject.noteId = this.props.settingColor._id
         console.log("note id retrived --->",this.props.noteId)
@@ -130,9 +132,7 @@ const colorsPallete = [{
             console.log(`\n\n\t ${colorsPallete[index].colorName} set to note --> ${this.props.settingColor}`)
            // this.props.refreshPostColorChange()
           //  this.setState({ anchorEl: null })
-          let value = null
-          this.props.anchor(value)
-          this.props.colorPopUp()
+         
         })
 
 

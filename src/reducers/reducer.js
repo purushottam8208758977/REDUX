@@ -28,7 +28,7 @@ export function reducer(state = initialState, action) {
             console.log("\n\n\topenColorPopUp", state.openColorPopUp)
             return {
                 ...state,
-                openColorPopUp: true
+                openColorPopUp: !(state.openColorPopUp)
             };
         case 'ANCHOREL': // for opening the color pop up
             console.log("\n\n\tanchorEl", action.value)
