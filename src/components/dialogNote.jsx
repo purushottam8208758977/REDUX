@@ -4,8 +4,12 @@ import Card from '@material-ui/core/Card';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
+import { connect } from 'react-redux';
+import {colorPopUp,anchor} from './actions'
 import {updateNote} from '../services/services'
+
+//child components
+import ColorPopover from './colorPopover'
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -33,7 +37,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export class DialogNote extends Component {
+ class DialogNote extends Component {
+    state = { openColorPopUp: false,anchorEl:null };
     constructor() {
         super()
         this.state = {
@@ -63,6 +68,13 @@ export class DialogNote extends Component {
             description: fetchedDescription
         })
         console.log("\n\nDescription-->", fetchedDescription);
+    }
+
+    colorOperation=(event)=>{
+        this.props.colorPopUp()
+        let value= event.currentTarget
+        console.log("event",event.currentTarget)
+        this.props.anchor(value)
     }
 
     editingNote = () => {
@@ -115,11 +127,29 @@ export class DialogNote extends Component {
 
                 <div id="dialogIcons">
                     <Button><img src={require('../assets/reminder.svg')} alt="reminder pic"></img> </Button>
-                    <Button> <img src={require('../assets/pallete.svg')} alt="pallete pic"></img>  </Button>
+                    <Button> <img src={require('../assets/pallete.svg')} onClick={this.colorOperation} alt="pallete pic"></img>  </Button>
                     <Button> <img src={require('../assets/archive.svg')} alt="archive pic "></img> </Button>
                     <Button onClick={(event) => this.handleMenu(event)}><MoreVertIcon></MoreVertIcon></Button>
                     <Button onClick={this.editingNote}><b>close</b></Button></div>
+                   <ColorPopover/> 
             </Card >
         );
     }
 }
+
+function mapStateToProps(state) {
+    console.log("states in dialog",state)
+    return {
+        openColorPopUp: state.openColorPopUp,
+        anchorEl:state.anchorEl
+    };
+}
+
+const mapDispatchToProps = {
+   // increment,
+    //decrement
+    colorPopUp,
+    anchor
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DialogNote); // counter component connected to redux and the connection is exported

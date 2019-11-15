@@ -7,7 +7,8 @@ import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { updateNote } from '../services/services'
-
+import { connect } from 'react-redux';
+import {colorPopUp,anchor} from './actions'
 
 const theme = createMuiTheme({
     overrides: {
@@ -97,17 +98,19 @@ const colorsPallete = [{
     colorCode: "#e6c9a7"
 }]
 
-export class ColorPopover extends Component {
+ class ColorPopover extends Component {
+    state = { openColorPopUp: false,anchorEl:null };
     constructor() {
         super()
         this.state = {
-            anchorEl: null,
+           // anchorEl: null,
             show: false
         }
         this.classes = useStyles.bind(this);
     }
     handlePopoverOpen = (event) => {
         this.setState({ anchorEl: event.currentTarget })
+
     }
     handlePopoverClose = () => {
         this.setState({ anchorEl: null })
@@ -129,16 +132,21 @@ export class ColorPopover extends Component {
 
     }
     render() {
-        const { anchorEl } = this.state
-        const open = Boolean(anchorEl)
+        //const { anchorEl } = this.state
+       // const open = Boolean(anchorEl)
+       console.log("color pop up value",this.props.anchorEl)
+        // console.log(`\n\n\tanchorel -->${this.props.achorEl} and openColorPopUp -->${this.props.openColorPopUp}`)
         return (
             <div >
                 <MuiThemeProvider theme={theme}>
                     <Menu
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={this.handlePopoverClose}
-                        id="HandleMenu"
+                       anchorEl={this.props.anchorEl}
+                      // anchorEl={this.props.anchorEl}
+                       // open={open}
+                       open={this.props.openColorPopUp}
+                     //  onClose={this.handlePopoverClose}
+                       onClose={this.props.openColorPopUp} 
+                       id="HandleMenu"
                     >
                         {colorsPallete.map((choice, index) => (
                             <Tooltip title={choice.colorName}>
@@ -153,3 +161,20 @@ export class ColorPopover extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    console.log("state of color pop over ",state)
+    return {
+        openColorPopUp: state.openColorPopUp,        
+        anchorEl:state.anchorEl
+    };
+}
+
+const mapDispatchToProps = {
+   // increment,
+    //decrement
+    colorPopUp,
+    anchor
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColorPopover); // counter component connected to redux and the connection is exported

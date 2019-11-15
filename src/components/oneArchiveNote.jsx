@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import {updateNote} from '../services/services'
-import { ColorPopover } from './colorPopover'
+import ColorPopover from './colorPopover'
 
 export class OneArchiveNote extends Component {
 

@@ -9,7 +9,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import { deleteLabelOnNote,updateNote } from '../services/services'
 
 //child components
-import { DialogNote } from './dialogNote'
+import  DialogNote  from './dialogNote'
 
 const useStyles = makeStyles(theme => ({
     root: {

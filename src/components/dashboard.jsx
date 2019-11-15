@@ -15,6 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import DoneAll from 'react-ionicons/lib/MdCheckmark'
 import { searchInNotes, uploadImage } from '../services/services'
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
 
 
 import Popper from '@material-ui/core/Popper';
@@ -209,7 +210,7 @@ const firstName = localStorage.getItem('firstName')
 const lastName = localStorage.getItem('lastName')
 const name = firstName + " " + lastName
 
-export class Dashboard extends Component {
+ class Dashboard extends Component {
     constructor() {
         super()
         this.state = {
@@ -227,7 +228,6 @@ export class Dashboard extends Component {
             enableSearching: false,
             search: "",
             anchorEl: null
-
 
         }
         this.classes = useStyles.bind(this);
@@ -489,8 +489,22 @@ export class Dashboard extends Component {
                         )}
                     </Popper>
 
-
+                    <div id="REDUX">REDUX VERSION</div>
                 </MuiThemeProvider></div >
         )
     }
 }
+
+
+function mapStateToProps(state) {
+    return {
+        count: state.count
+    };
+}
+
+const mapDispatchToProps = {
+   // increment,
+    //decrement
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard); // counter component connected to redux and the connection is exported

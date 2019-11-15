@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuList from '@material-ui/core/MenuList';
 
 //child components
-import { ColorPopover } from './colorPopover'
+import ColorPopover  from './colorPopover'
 import { LabelOnNote } from './labelOnNote'
 import List from '@material-ui/core/List';
 import { Typography } from '@material-ui/core';

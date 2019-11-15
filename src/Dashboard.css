@@ -33,6 +33,11 @@ margin-top :-2%
     justify-content: space-between;
     width: 100%;
 }
+#REDUX{
+position: absolute;
+top:95%;
+right:2%
+}
 #Icons{
     display: flex;
     flex-direction: row;
