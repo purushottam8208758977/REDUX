@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { updateNote } from '../services/services'
 import { connect } from 'react-redux';
-import {colorPopUp,anchor} from './actions'
+import {colorPopUp,anchor,noteIdAction} from './actions'
 
 const theme = createMuiTheme({
     overrides: {
@@ -99,7 +99,7 @@ const colorsPallete = [{
 }]
 
  class ColorPopover extends Component {
-    state = { openColorPopUp: false,anchorEl:null };
+    state = { openColorPopUp: false,anchorEl:null,noteId:"" };
     constructor() {
         super()
         this.state = {
@@ -120,13 +120,19 @@ const colorsPallete = [{
         console.log("\n\n\tInitiating color change -->");
 
         let colorObject = {}
-        colorObject.noteId = this.props.settingColor._id
+        // colorObject.noteId = this.props.settingColor._id
+        console.log("note id retrived --->",this.props.noteId)
+        colorObject.noteId=this.props.noteId
         colorObject.updating = { color: colorsPallete[index].colorCode }
+        console.log("object before sending",colorObject)
 
         updateNote(colorObject).then((coloredNote) => {
             console.log(`\n\n\t ${colorsPallete[index].colorName} set to note --> ${this.props.settingColor}`)
-            this.props.refreshPostColorChange()
-            this.setState({ anchorEl: null })
+           // this.props.refreshPostColorChange()
+          //  this.setState({ anchorEl: null })
+          let value = null
+          this.props.anchor(value)
+          this.props.colorPopUp()
         })
 
 
@@ -166,7 +172,8 @@ function mapStateToProps(state) {
     console.log("state of color pop over ",state)
     return {
         openColorPopUp: state.openColorPopUp,        
-        anchorEl:state.anchorEl
+        anchorEl:state.anchorEl,
+        noteId:state.noteId
     };
 }
 
@@ -174,7 +181,8 @@ const mapDispatchToProps = {
    // increment,
     //decrement
     colorPopUp,
-    anchor
+    anchor,
+    noteIdAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ColorPopover); // counter component connected to redux and the connection is exported

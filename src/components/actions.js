@@ -7,4 +7,4 @@ export const increment = () => ({ type: "INCREMENT" });
 export const colorPopUp=()=>({type :"COLORPOPUP"})
 export const anchor=(value)=>({type :"ANCHOREL",value:value})
 
-export const userInfo=()=>({type:"USER",info:info})
+export const noteIdAction=(passedId)=>({type:"NOTEID",value:passedId})

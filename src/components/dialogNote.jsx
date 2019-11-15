@@ -5,8 +5,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
-import {colorPopUp,anchor} from './actions'
 import {updateNote} from '../services/services'
+import {colorPopUp,anchor,noteIdAction} from './actions'
 
 //child components
 import ColorPopover from './colorPopover'
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
  class DialogNote extends Component {
-    state = { openColorPopUp: false,anchorEl:null };
+    state = { openColorPopUp: false,anchorEl:null,noteId:"" };
     constructor() {
         super()
         this.state = {
@@ -71,10 +71,13 @@ const useStyles = makeStyles(theme => ({
     }
 
     colorOperation=(event)=>{
-        this.props.colorPopUp()
+        this.props.colorPopUp()   // we made the menu rhs true
         let value= event.currentTarget
         console.log("event",event.currentTarget)
         this.props.anchor(value)
+        let passedId=this.props.dialogData._id
+        console.log("\n\n\tPassed id in dialog note",passedId)
+        this.props.noteIdAction(passedId)
     }
 
     editingNote = () => {
@@ -98,7 +101,7 @@ const useStyles = makeStyles(theme => ({
     }
     render() {
         return (
-            <Card onClick={this.handleClickOpen}>
+            <Card onClick={this.handleClickOpen} style={{backgroundColor:this.props.dialogData.color}}>
                 <div id="dialog">
                     <TextField
                         id="standard-basic"
@@ -141,7 +144,8 @@ function mapStateToProps(state) {
     console.log("states in dialog",state)
     return {
         openColorPopUp: state.openColorPopUp,
-        anchorEl:state.anchorEl
+        anchorEl:state.anchorEl,
+        noteId:state.noteId
     };
 }
 
@@ -149,7 +153,8 @@ const mapDispatchToProps = {
    // increment,
     //decrement
     colorPopUp,
-    anchor
+    anchor,
+    noteIdAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DialogNote); // counter component connected to redux and the connection is exported
