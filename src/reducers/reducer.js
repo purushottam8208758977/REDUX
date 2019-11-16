@@ -2,7 +2,9 @@ const initialState = {
     count: 0,
     openColorPopUp: false,
     anchorEl: null,
-    noteId: ""
+    noteId: "",
+    loading: false,
+    notes:{}
 };
 export function reducer(state = initialState, action) {
     console.log('reducer', state, action);
@@ -41,6 +43,19 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 noteId: action.value
+            };
+        case 'GET_NOTES':
+            console.log("\n\n\tGet notes --->")
+            return {
+                ...state,
+                loading: true
+            };
+        case 'NOTES_RECEIVED':
+            console.log("\n\n\tNotes received :---->",)    
+            return {
+                ...state,
+                notes:action.json[0],
+                loading:false
             }
         default:
             return state;

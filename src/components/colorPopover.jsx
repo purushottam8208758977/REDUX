@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { updateNote } from '../services/services'
 import { connect } from 'react-redux';
-import {colorPopUp,anchor,noteIdAction} from './actions'
+import {colorPopUp,anchor,noteIdAction,getNotesRefresh} from './actions'
 
 const theme = createMuiTheme({
     overrides: {
@@ -99,7 +99,7 @@ const colorsPallete = [{
 }]
 
  class ColorPopover extends Component {
-    state = { openColorPopUp: false,anchorEl:null,noteId:"" };
+    state = { openColorPopUp: false,anchorEl:null,noteId:"",loading:false };
     constructor() {
         super()
         this.state = {
@@ -132,6 +132,7 @@ const colorsPallete = [{
             console.log(`\n\n\t ${colorsPallete[index].colorName} set to note --> ${this.props.settingColor}`)
            // this.props.refreshPostColorChange()
           //  this.setState({ anchorEl: null })
+            this.props.getNotesRefresh()
          
         })
 
@@ -173,7 +174,8 @@ function mapStateToProps(state) {
     return {
         openColorPopUp: state.openColorPopUp,        
         anchorEl:state.anchorEl,
-        noteId:state.noteId
+        noteId:state.noteId,
+        loading:state.loading
     };
 }
 
@@ -182,7 +184,8 @@ const mapDispatchToProps = {
     //decrement
     colorPopUp,
     anchor,
-    noteIdAction
+    noteIdAction,
+    getNotesRefresh
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ColorPopover); // counter component connected to redux and the connection is exported

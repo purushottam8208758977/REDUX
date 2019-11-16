@@ -4,7 +4,8 @@
 export const decrement = () => ({ type: "DECREMENT" });
 export const increment = () => ({ type: "INCREMENT" });
 
-export const colorPopUp=()=>({type :"COLORPOPUP"})
-export const anchor=(value)=>({type :"ANCHOREL",value:value})
+export const colorPopUp = () => ({ type: "COLORPOPUP" })
+export const anchor = (value) => ({ type: "ANCHOREL", value: value })
 
-export const noteIdAction=(passedId)=>({type:"NOTEID",value:passedId})
+export const noteIdAction = (passedId) => ({ type: "NOTEID", value: passedId })
+export const getNotesRefresh = () => ({ type: "GET_NOTES" })
