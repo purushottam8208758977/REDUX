@@ -17,6 +17,6 @@ function* allNotesTrigger() {
 
 export default function* rootSaga() {
    yield all([
-   actionWatcher(),
+   actionWatcher(), // runs all the time 
    ]);
 }

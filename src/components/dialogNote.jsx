@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import {updateNote} from '../services/services'
-import {colorPopUp,anchor,noteIdAction} from './actions'
+import {colorPopUp,anchor,noteIdAction,getNotesRefresh} from './actions'
 
 //child components
 import ColorPopover from './colorPopover'
@@ -95,7 +95,8 @@ const useStyles = makeStyles(theme => ({
 
         updateNote(noteObject).then((responseReceived)=>{
             console.log("\n\n\tDialog note--> updating response--->",responseReceived)
-            this.props.refreshAfterEditing()
+            //this.props.refreshAfterEditing()
+            this.props.getNotesRefresh()
         })
 
     }
@@ -154,7 +155,8 @@ const mapDispatchToProps = {
     //decrement
     colorPopUp,
     anchor,
-    noteIdAction
+    noteIdAction,
+    getNotesRefresh
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DialogNote); // counter component connected to redux and the connection is exported
