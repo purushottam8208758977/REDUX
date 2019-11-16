@@ -4,7 +4,7 @@ const initialState = {
     anchorEl: null,
     noteId: "",
     loading: false,
-    notes:{}
+    notes:[]
 };
 export function reducer(state = initialState, action) {
     console.log('reducer', state, action);
@@ -51,10 +51,10 @@ export function reducer(state = initialState, action) {
                 loading: true
             };
         case 'NOTES_RECEIVED':
-            console.log("\n\n\tNotes received :---->",)    
+            console.log("\n\n\tNotes received :---->",action.json)    
             return {
                 ...state,
-                notes:action.json[0],
+                notes:action.json,
                 loading:false
             }
         default:

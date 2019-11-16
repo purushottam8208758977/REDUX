@@ -26,7 +26,7 @@ import Fade from '@material-ui/core/Fade';
 
 //child components
 import { TakeNote } from './TakeNote'
-import { Display } from './display'
+import Display  from './display'
 import { DrawerMade } from './drawer'
 import CircularIndeterminate from "./loader"
 /**

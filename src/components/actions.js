@@ -9,3 +9,4 @@ export const anchor = (value) => ({ type: "ANCHOREL", value: value })
 
 export const noteIdAction = (passedId) => ({ type: "NOTEID", value: passedId })
 export const getNotesRefresh = () => ({ type: "GET_NOTES" })
+export const dbNotesReceived=(data)=>({type :"NOTES_RECEIVED",jsonData:data})

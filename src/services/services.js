@@ -45,7 +45,6 @@ export function allNotes(){
             token: authenticationToken
         }
     })
-
 }
 
 export function allArchives(){

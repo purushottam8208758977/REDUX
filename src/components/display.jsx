@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { allNotes, allReminders, allArchives, allTrash ,labelledNotes} from '../services/services'
+import { allNotes, allReminders, allArchives, allTrash, labelledNotes } from '../services/services'
 import Masonry from 'react-masonry-component'
 
 //child component
@@ -7,8 +7,13 @@ import { SingleNote } from './singleNote'
 import { OneTrashNote } from './oneTrashNote'
 import { OneArchiveNote } from './oneArchiveNote'
 import { OneReminderNote } from './oneReminderNote'
-export class Display extends Component {
+
+import { connect } from 'react-redux';
+import { dbNotesReceived,getNotesRefresh } from './actions'
+
+ class Display extends Component {
     displayContent;
+    state = { notes: [] }
     constructor() {
         super()
         this.state = {
@@ -17,7 +22,7 @@ export class Display extends Component {
             reminders: [],
             trash: [],
             searchedNotes: [],
-            labelListing:[],
+            labelListing: [],
             openLoader: false
         }
     }
@@ -25,8 +30,9 @@ export class Display extends Component {
      * @description- This method is invoked just after the component is invoked
      */
     componentDidMount() {
-        this.allNotesDisplaying()
-       // this.allRemindersDisplaying()
+        // this.allNotesDisplaying()
+        this.props.getNotesRefresh()
+        // this.allRemindersDisplaying()
         this.allArchivesDisplaying()
         this.allTrashDisplaying()
     }
@@ -35,7 +41,7 @@ export class Display extends Component {
         this.props.loadingInitiated(true) //start loading
         allNotes().then((responseReceived) => {
             console.log("\n\n\tAll notes received ---->", responseReceived.data.data)
-            this.setState({ notes: responseReceived.data.data.reverse() })
+            //this.setState({ notes: responseReceived.data.data.reverse() })
             setTimeout(() => {
                 this.setState({ openLoader: false })
                 this.props.loadingInitiated(false) //end loading
@@ -83,11 +89,11 @@ export class Display extends Component {
         })
         console.log("any...->")
     }
-    allLabelsListing=(labelName)=>{
-        
-        labelledNotes(labelName).then((listingResponse)=>{
-            console.log("\n\n\tListing response--->",listingResponse)
-            this.setState({labelListing:listingResponse.data.data})
+    allLabelsListing = (labelName) => {
+
+        labelledNotes(labelName).then((listingResponse) => {
+            console.log("\n\n\tListing response--->", listingResponse)
+            this.setState({ labelListing: listingResponse.data.data })
             setTimeout(() => {
                 this.setState({ openLoader: false })
                 this.props.loadingInitiated(false) //end loading
@@ -95,15 +101,29 @@ export class Display extends Component {
         })
     }
     render() {
-        if (this.props.fetchNotes) {
-            this.displayContent = this.state.notes.map((data, index) => {
-                //console.log("\n\n\tdata of notes -->",data)
+        // if (this.props.fetchNotes) {
+        //     this.displayContent = this.props.notes.map((data, index) => {
+        //         //console.log("\n\n\tdata of notes -->",data)
+        //         return (
+        //             <div > <SingleNote key={index}
+        //                 data={data}//props data sent to Single note component to access further 
+        //                 refreshDisplay={this.allNotesDisplaying}
+        //                 notesView={this.props.notesView}
+        //                 /></div>
+        //         )
+        //     })
+        // }
+        // else
+        console.log("notes form saga in display--->", this.props.notes)
+        if (this.props.notes) {
+            this.displayContent = this.props.notes.map((data, index) => {
+                console.log("\n\n\tdata of notes -->", data)
                 return (
                     <div > <SingleNote key={index}
                         data={data}//props data sent to Single note component to access further 
                         refreshDisplay={this.allNotesDisplaying}
                         notesView={this.props.notesView}
-                        /></div>
+                    /></div>
                 )
             })
         }
@@ -142,7 +162,7 @@ export class Display extends Component {
                 )
             })
         }
-        else if(this.props.searchNotes) {
+        else if (this.props.searchNotes) {
             console.log("\n\n\tIn display")
             this.displayContent = this.props.searchNotes.map((data, index) => {
                 //console.log("\n\n\tdata of trash -->",data)
@@ -154,7 +174,7 @@ export class Display extends Component {
                 )
             })
         }
-        else{ // fetchlabelledNotes 
+        else { // fetchlabelledNotes 
             console.log("\n\n\tIn display")
             this.displayContent = this.state.labelListing.map((data, index) => {
                 //console.log("\n\n\tdata of trash -->",data)
@@ -169,7 +189,7 @@ export class Display extends Component {
         }
         return (
             <div>
-            
+
                 {this.props.notesView ?
                     <div id="ContentO"><Masonry>
                         {this.displayContent}</Masonry>
@@ -178,8 +198,22 @@ export class Display extends Component {
                     <div id="cardsSettled"><Masonry id="Content">
                         {this.displayContent}</Masonry>
                     </div>}
-                   
+
             </div>
         )
     }
 }
+
+function mapStateToProps(state) {
+    console.log("state of notes in display", state)
+    return {
+        notes: state.notes
+    };
+}
+
+const mapDispatchToProps = {
+    dbNotesReceived,
+    getNotesRefresh
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Display); // counter component connected to redux and the connection is exported
