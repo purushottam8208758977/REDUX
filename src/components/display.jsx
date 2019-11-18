@@ -3,7 +3,7 @@ import { allNotes, allReminders, allArchives, allTrash, labelledNotes } from '..
 import Masonry from 'react-masonry-component'
 
 //child component
-import { SingleNote } from './singleNote'
+import  SingleNote from './singleNote'
 import { OneTrashNote } from './oneTrashNote'
 import { OneArchiveNote } from './oneArchiveNote'
 import { OneReminderNote } from './oneReminderNote'
@@ -33,8 +33,8 @@ import { dbNotesReceived,getNotesRefresh } from './actions'
         // this.allNotesDisplaying()
         this.props.getNotesRefresh()
         // this.allRemindersDisplaying()
-        this.allArchivesDisplaying()
-        this.allTrashDisplaying()
+        //this.allArchivesDisplaying()
+        //this.allTrashDisplaying()
     }
     allNotesDisplaying = () => {
         this.setState({ openLoader: true })

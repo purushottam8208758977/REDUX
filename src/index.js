@@ -13,7 +13,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { logger } from 'redux-logger';
 import rootSaga from './sagas/saga'
 
-const sagaMiddleWare = createSagaMiddleware()
+const sagaMiddleWare = createSagaMiddleware() // created a middle ware 
 
 const store = createStore(
     reducer,

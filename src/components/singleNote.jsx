@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core' // overiding default css properties
 import Card from '@material-ui/core/Card';
-import { IconsList } from './iconsList';
+import  IconsList  from './iconsList';
 import Dialog from '@material-ui/core/Dialog';
 import Chip from '@material-ui/core/Chip';
 import CloseIcon from '@material-ui/icons/Close'
 import { deleteLabelOnNote,updateNote } from '../services/services'
+import { connect } from 'react-redux';
+import {getNotesRefresh} from './actions'
 
 //child components
 import  DialogNote  from './dialogNote'
@@ -35,7 +37,7 @@ const theme = createMuiTheme({
 
 
 
-export class SingleNote extends Component {
+ class SingleNote extends Component {
 
     constructor() {
         super()
@@ -70,7 +72,9 @@ export class SingleNote extends Component {
         console.log("\n\nlabel  --->", this.props.data.label[index]._id)
         deleteLabelOnNote(labelObject).then((deletedLabelResponse) => {
             console.log("\n\n\tAfter deleting label response")
-            this.props.refreshDisplay()
+            //this.props.refreshDisplay()
+            this.props.getNotesRefresh()
+
         })
     }
     removingReminderOnNote=()=>{
@@ -166,3 +170,16 @@ export class SingleNote extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    console.log("state of notes in display", state)
+    return {
+        notes: state.notes
+    };
+}
+
+const mapDispatchToProps = {
+    getNotesRefresh
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleNote); // counter component connected to redux and the connection is exported

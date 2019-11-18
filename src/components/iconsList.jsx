@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core' // overiding default css properties
 import TextField from '@material-ui/core/TextField';
 import MenuList from '@material-ui/core/MenuList';
+import {connect}  from 'react-redux'
+import { getNotesRefresh } from './actions'
 
 //child components
 import ColorPopover  from './colorPopover'
@@ -41,7 +43,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
 }));
-export class IconsList extends Component {
+ class IconsList extends Component {
     mappinglabels;
     constructor() {
         super()
@@ -82,20 +84,22 @@ export class IconsList extends Component {
 
         updateNote(archiveObject).then((responseReceived) => {
             console.log("\n\n\tIcons list --> archive response--->", responseReceived)
-            this.refreshBoth()
+            this.props.getNotesRefresh()
+            // this.refreshBoth()
         })
     }
 
     handleNoteEvents = (event, index) => {
         if (index === 0) {
             //initiating trashing process
-            this.setState({ anchorEl: null }) // for closing the pop up of menu
+            this.setState({ anchorEl: null ,parentMenu: false}) // for closing the pop up of menu
             let deletionObject = {}
             deletionObject.noteId = this.props.individualNoteData._id
             deletionObject.updating = { trash: true }
             updateNote(deletionObject).then((responseReceived) => {
                 console.log("\n\n\tIcons list --> trash response--->", responseReceived)
-                this.props.refreshing()
+                this.props.getNotesRefresh()
+
             })
         }
         else {//clicked on index ===1 a-->Add label
@@ -304,3 +308,9 @@ export class IconsList extends Component {
         )
     }
 }
+
+const mapDispatchToProps = {
+    getNotesRefresh
+};
+
+export default connect(null, mapDispatchToProps)(IconsList); // counter component connected to redux and the connection is exported

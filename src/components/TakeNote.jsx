@@ -11,6 +11,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import {connect}  from 'react-redux'
+import { getNotesRefresh } from './actions'
 
 
 //hitting api
@@ -44,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 const menuItems = ['Add Label']
 
-export class TakeNote extends Component {
+ class TakeNote extends Component {
     constructor() {
         super()
         this.state = {
@@ -82,11 +84,11 @@ export class TakeNote extends Component {
     }
 
     closeMenu = () => {
-        this.setState({anchorEl:null})
+        this.setState({ anchorEl: null })
     }
 
-    closeTakeNote=()=>{
-        this.setState({toggle:false})
+    closeTakeNote = () => {
+        this.setState({ toggle: false })
         // this.creatingNote()
     }
     creatingNote = () => {
@@ -101,10 +103,11 @@ export class TakeNote extends Component {
         createNote(noteObject).then((responseReceived) => {
             if (responseReceived) {
                 if (responseReceived.data.success) {
-                    this.props.refresh() 
+                    //this.props.refresh()
+                    this.props.getNotesRefresh()
                     this.setState({ title: "" })
                     this.setState({ description: "" })
-                    this.setState({ toggle: false }) 
+                    this.setState({ toggle: false })
                     toaster.notify(responseReceived.data.message)
                 }
             }
@@ -122,60 +125,60 @@ export class TakeNote extends Component {
         const open = Boolean(anchorEl)
         return (
             <div id="NoteDiv">
-              
-              <ClickAwayListener onClickAway={this.closeTakeNote}>
-                {this.state.toggle ?
-                    <Card id="TakeN2" className={this.classes.card}>
-                        <TextField
-                            id="standard-basic"
-                            placeholder="Title"
-                            readOnly="true"
-                            className={this.classes.textField}
-                            value={this.state.title}  //binding title ...entry point into front end
-                            onChange={this.fetchingTitle}  //invoking respective method to initiate reponse process to backend
-                            margin="normal"
-                            InputProps={{
-                                disableUnderline: true,
-                            }}
-                        />
-                        <TextField
-                            id="standard-basic"
-                            placeholder="Description"
-                            readOnly="true"
-                            className={this.classes.textField}
-                            value={this.state.description}  //binding description ...entry point into front end
-                            onChange={this.fetchingDescription}  //invoking respective method to initiate reponse process to backend
-                            margin="normal"
-                            InputProps={{
-                                disableUnderline: true,
-                            }}
-                        />
-                        <div id="IconsList">
-                            <div id="Icons">
-                                <Button><img src={require('../assets/reminder.svg')} alt="reminder pic"></img> </Button>
-                                <Button> <img src={require('../assets/pallete.svg')} alt="pallete pic"></img>  </Button>
-                                <Button> <img src={require('../assets/archive.svg')} alt="archive pic "></img> </Button>
-                                <Button onClick={(event) => this.handleMenu(event)}><MoreVertIcon></MoreVertIcon></Button>
-                            </div>
-                            <Button onClick={this.creatingNote} ><b>close</b></Button></div>
-                    </Card>
 
-                    :
-                    <Card id="TakeN" onClick={this.handleTakeNote} className={this.classes.card}>
-                        <TextField
-                            id="standard-basic"
-                            placeholder="Take a note ..."
-                            readOnly="true"
-                            className={this.classes.textField}
-                            underline="none"
-                            margin="normal"
-                            InputProps={{
-                                disableUnderline: true,
-                            }}
-                        />
-                    </Card>
-                }
-</ClickAwayListener>
+                <ClickAwayListener onClickAway={this.closeTakeNote}>
+                    {this.state.toggle ?
+                        <Card id="TakeN2" className={this.classes.card}>
+                            <TextField
+                                id="standard-basic"
+                                placeholder="Title"
+                                readOnly="true"
+                                className={this.classes.textField}
+                                value={this.state.title}  //binding title ...entry point into front end
+                                onChange={this.fetchingTitle}  //invoking respective method to initiate reponse process to backend
+                                margin="normal"
+                                InputProps={{
+                                    disableUnderline: true,
+                                }}
+                            />
+                            <TextField
+                                id="standard-basic"
+                                placeholder="Description"
+                                readOnly="true"
+                                className={this.classes.textField}
+                                value={this.state.description}  //binding description ...entry point into front end
+                                onChange={this.fetchingDescription}  //invoking respective method to initiate reponse process to backend
+                                margin="normal"
+                                InputProps={{
+                                    disableUnderline: true,
+                                }}
+                            />
+                            <div id="IconsList">
+                                <div id="Icons">
+                                    <Button><img src={require('../assets/reminder.svg')} alt="reminder pic"></img> </Button>
+                                    <Button> <img src={require('../assets/pallete.svg')} alt="pallete pic"></img>  </Button>
+                                    <Button> <img src={require('../assets/archive.svg')} alt="archive pic "></img> </Button>
+                                    <Button onClick={(event) => this.handleMenu(event)}><MoreVertIcon></MoreVertIcon></Button>
+                                </div>
+                                <Button onClick={this.creatingNote} ><b>close</b></Button></div>
+                        </Card>
+
+                        :
+                        <Card id="TakeN" onClick={this.handleTakeNote} className={this.classes.card}>
+                            <TextField
+                                id="standard-basic"
+                                placeholder="Take a note ..."
+                                readOnly="true"
+                                className={this.classes.textField}
+                                underline="none"
+                                margin="normal"
+                                InputProps={{
+                                    disableUnderline: true,
+                                }}
+                            />
+                        </Card>
+                    }
+                </ClickAwayListener>
                 <Menu
                     anchorEl={anchorEl}
                     open={open}
@@ -193,3 +196,11 @@ export class TakeNote extends Component {
 
     }
 }
+
+
+
+const mapDispatchToProps = {
+    getNotesRefresh
+};
+
+export default connect(null, mapDispatchToProps)(TakeNote); // counter component connected to redux and the connection is exported

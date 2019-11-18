@@ -25,7 +25,7 @@ import Fade from '@material-ui/core/Fade';
 
 
 //child components
-import { TakeNote } from './TakeNote'
+import  TakeNote  from './TakeNote'
 import Display  from './display'
 import { DrawerMade } from './drawer'
 import CircularIndeterminate from "./loader"
@@ -454,7 +454,7 @@ const name = firstName + " " + lastName
                         :
                         <div id={movement} >
                             {/* Taking note component will render here   */}
-                            <TakeNote refresh={this.NoteDisplay} />
+                            <TakeNote  />
                             {/* All note will be displayed here using the display component 3*/}
                             <Display
                                 ref={this.CreatingNoteInstance}
