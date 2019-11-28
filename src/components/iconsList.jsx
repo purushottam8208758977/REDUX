@@ -13,7 +13,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core' // overidin
 import TextField from '@material-ui/core/TextField';
 import MenuList from '@material-ui/core/MenuList';
 import {connect}  from 'react-redux'
-import { getNotesRefresh } from './actions'
+import {colorPopUp,anchor,noteIdAction,getNotesRefresh} from './actions'
 
 //child components
 import ColorPopover  from './colorPopover'
@@ -43,8 +43,9 @@ const useStyles = makeStyles(theme => ({
         },
     },
 }));
- class IconsList extends Component {
+ export class IconsList extends Component {
     mappinglabels;
+    state = { openColorPopUp: false,anchorEl:null,noteId:"" };
     constructor() {
         super()
         this.state = {
@@ -58,7 +59,6 @@ const useStyles = makeStyles(theme => ({
             userReminderDate: "",
             reminderChildMenu:false
         }
-        this.ColorPopover = React.createRef()
         this.classes = useStyles.bind(this);
     }
     /**
@@ -174,8 +174,15 @@ const useStyles = makeStyles(theme => ({
     }
 
     openColorPallete = (event) => {
-        console.log("\n\n\tOn color icon")
-        this.ColorPopover.current.handlePopoverOpen(event)
+        console.log("\n\n\tOpening color icon ")
+        this.props.colorPopUp()   // we made the menu rhs true
+        let value= event.currentTarget
+        console.log("event in icons list opening color pop up",event.currentTarget)
+        this.props.anchor(value)
+        let passedId=this.props.individualNoteData._id
+        console.log("\n\n\tPassed id in dialog note",passedId)
+        this.props.noteIdAction(passedId)
+
     }
 
     openReminderMenu = (event) => {
@@ -309,8 +316,21 @@ const useStyles = makeStyles(theme => ({
     }
 }
 
+function mapStateToProps(state) {
+    console.log("states in icons list ",state)
+    return {
+        openColorPopUp: state.openColorPopUp,
+        anchorEl:state.anchorEl,
+        noteId:state.noteId
+    };
+}
+
 const mapDispatchToProps = {
+    colorPopUp,
+    anchor,
+    noteIdAction,
     getNotesRefresh
 };
 
-export default connect(null, mapDispatchToProps)(IconsList); // counter component connected to redux and the connection is exported
+export default connect(mapStateToProps, mapDispatchToProps)(IconsList); // counter component connected to redux and the connection is exported
+
